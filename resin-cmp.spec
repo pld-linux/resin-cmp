@@ -4,9 +4,9 @@ Name:		resin-cmp
 Version:	1.0.1
 Release:	4
 License:	Caucho Developer Source License
-Group:		Java/Networking/Daemons
-Group(de):	Java/Netzwerkwesen/Server
-Group(pl):	Java/Sieciowe/Serwery
+Group:		Networking/Daemons/Java
+Group(de):	Netzwerkwesen/Server/Java
+Group(pl):	Sieciowe/Serwery/Java
 URL:		http://www.caucho.com/
 
 Source0:	http://www.caucho.com/download/%{name}-%{version}.tar.gz
@@ -60,9 +60,9 @@ client's capability, from palm pilots to Mozilla.
 %package doc
 Summary:	Additional documentation for Resin
 Requires:	resin-cmp = %{version}
-Group:		Java/Networking/Daemons
-Group(de):	Java/Netzwerkwesen/Server
-Group(pl):	Java/Sieciowe/Serwery
+Group:		Networking/Daemons/Java
+Group(de):	Netzwerkwesen/Server/Java
+Group(pl):	Sieciowe/Serwery/Java
 
 %description doc
 Documentation for Resin. Contains:
