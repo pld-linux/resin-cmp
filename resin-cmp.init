@@ -23,18 +23,36 @@ if is_no "${NETWORKING}"; then
    msg_Network_Down resin
    exit 1
 fi
-         
+
+PARAMS="-conf $CONF -stdout $STDOUT -stderr $STDERR -pid $PID"
+
+action() {
+   act=$1
+   if [ $act = "stop" ]; then
+      msg_stopping resin
+   elif [ $act = "start" ]; then
+      msg_starting resin
+   else
+      echo 'error: use action() <stop|start>'
+      return 1
+   fi
+
+   if [ -z "$VERBOSE" ]; then
+      busy
+         /usr/bin/resin $PARAMS $act > /dev/null 2> /dev/null
+      ok
+   else
+      /usr/bin/resin $PARAMS -verbose $act
+   fi
+   return 0
+}
 
 # See how we were called.
 case "$1" in
   start)
    # Check if the service is already running?
    if [ ! -f /var/lock/subsys/resin ]; then
-      msg_starting resin; busy
-      /usr/bin/resin \
-         -conf $CONF -stdout $STDOUT -stderr $STDERR -pid $PID start \
-         > /dev/null 2> /dev/null
-      ok
+      action start
       touch /var/lock/subsys/resin
       RETVAL=0
    else
@@ -44,10 +62,7 @@ case "$1" in
    ;;
   stop)
    if [ -f /var/lock/subsys/resin ]; then
-      msg_stopping resin
-      /usr/bin/resin \
-         -conf $CONF -stdout $STDOUT -stderr $STDERR -pid $PID stop \
-         > /dev/null 2> /dev/null
+      action stop
       rm -f /var/lock/subsys/resin >/dev/null 2>&1
       RETVAL=0
    else
@@ -56,9 +71,8 @@ case "$1" in
    fi   
    ;;
   restart)
-      /usr/bin/resin \
-         -conf $CONF -stdout $STDOUT -stderr $STDERR -pid $PID restart \
-         > /dev/null 2> /dev/null
+     $0 stop
+     $0 start
    ;;
   status)
    status resin
