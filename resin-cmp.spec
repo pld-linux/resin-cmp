@@ -92,7 +92,7 @@ Documentation for Resin. Contains:
 Dokumentacja dla Resina. Zawiera:
 - servlety demonstracyjne, FAQ
 - konfiguracje instalacji: dla samodzielnego Resina, Resina z Apache
-  pod uniksem, z Apache pod Win32, IIS, O'Reilly WebSite, Netscape.
+  pod Uniksem, z Apache pod Win32, IIS, O'Reilly WebSite, Netscape.
 - podstawowy resin.conf: konfiguracja servletów, konfiguracja bazy
   danych, konfiguracja aplikacji webowych, konfiguracja HTTP i srun,
   ogólna konfiguracja Resina
