@@ -32,11 +32,11 @@ Requires:	jdk >= 1.2
 Requires:	sed
 Prereq:		/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-BuildRequires:	jdk >= 1.2 
+BuildRequires:	jdk >= 1.2
 BuildRequires:	openssl-devel
-BuildRequires:  autoconf >= 1.4
-BuildRequires:  automake >= 1.4d
-BuildRequires:  libtool >= 1.4
+BuildRequires:	autoconf >= 1.4
+BuildRequires:	automake >= 1.4d
+BuildRequires:	libtool >= 1.4
 
 
 %description
@@ -136,7 +136,7 @@ Szczegó³y na http://localhost:8880/java_tut/hardcore.xtp .
 
 %define		_libexecdir	%{_prefix}/lib/apache
 
-%prep 
+%prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
@@ -156,7 +156,7 @@ autoconf
 	--with-openssl=%{_prefix} \
 	--enable-linux-smp
 
-%{__make} 
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -269,7 +269,7 @@ echo "Don't forget to uncomment examples in resin.conf and restart resin-cmp"
 %attr(660,root,http) %ghost /var/log/resin/*
 %attr(750,root,root) %dir /var/log/archiv/resin
 
-%defattr(660,root,http,0770) 
+%defattr(660,root,http,0770)
 %{_localstatedir}/lib/resin/cache
 %{_localstatedir}/lib/resin/work
 %{_localstatedir}/lib/resin/war_expand
