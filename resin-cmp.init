@@ -31,7 +31,7 @@ case "$1" in
    # Check if the service is already running?
    if [ ! -f /var/lock/subsys/resin ]; then
       msg_starting resin; busy
-      /usr/share/resin/bin/resin \
+      /usr/bin/resin \
          -conf $CONF -stdout $STDOUT -stderr $STDERR -pid $PID start \
          > /dev/null 2> /dev/null
       ok
@@ -45,7 +45,7 @@ case "$1" in
   stop)
    if [ -f /var/lock/subsys/resin ]; then
       msg_stopping resin
-      /usr/share/resin/bin/resin \
+      /usr/bin/resin \
          -conf $CONF -stdout $STDOUT -stderr $STDERR -pid $PID stop \
          > /dev/null 2> /dev/null
       rm -f /var/lock/subsys/resin >/dev/null 2>&1
@@ -56,7 +56,7 @@ case "$1" in
    fi   
    ;;
   restart)
-      /usr/share/resin/bin/resin \
+      /usr/bin/resin \
          -conf $CONF -stdout $STDOUT -stderr $STDERR -pid $PID restart \
          > /dev/null 2> /dev/null
    ;;
