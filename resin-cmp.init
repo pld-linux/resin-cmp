@@ -56,8 +56,9 @@ case "$1" in
    fi   
    ;;
   restart)
-   $0 stop
-   $0 start
+      /usr/share/resin/bin/resin \
+         -conf $CONF -stdout $STDOUT -stderr $STDERR -pid $PID restart \
+         > /dev/null 2> /dev/null
    ;;
   status)
    status resin
