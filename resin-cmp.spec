@@ -157,8 +157,8 @@ Szczegó³y na http://localhost:8880/java_tut/hardcore.xtp .
 %configure \
 	--with-apache \
 	--with-apache-eapi \
-	--with-java-home=/usr/lib/java \
-	--with-jni-include=/usr/lib/java/include \
+	--with-java-home=%{_libdir}/java \
+	--with-jni-include=%{_libdir}/java/include \
 	--with-openssl=/usr \
 	--enable-linux-smp
 
