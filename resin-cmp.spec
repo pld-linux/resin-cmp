@@ -66,7 +66,7 @@ komplikowania rozproszonych obiektów.
 Resin-CMP zawiera Resina 2.0. Resin to szybki silnik servletowy i JSP,
 obs³uguj±cy load balancing aby osi±gn±æ wiêksz± niezawodno¶æ. Resin
 wspiera oddzielenie tre¶ci od stylu poprzez obs³ugê XSL. Servlety mog±
-generowaæ prosy XML i u¿ywaæ filtra XSL do formatowania wyników
+generowaæ prosty XML i u¿ywaæ filtra XSL do formatowania wyników
 zale¿nie od mo¿liwo¶ci klienta, od Palm Pilotów do Mozilli.
 
 %package doc
