@@ -194,8 +194,6 @@ install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 
 touch $RPM_BUILD_ROOT/var/log/resin/{access,error,stdout,sterr}_log
 
-gzip -9nf LICENSE readme.txt conf/*
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -251,26 +249,21 @@ echo "Don't forget to uncomment examples in resin.conf and restart resin-cmp"
 
 %files
 %defattr(644,root,root,755)
-%doc LICENSE.gz readme.txt.gz conf/*.gz
-
+%doc LICENSE readme.txt conf/*
 %attr(0750,root,http) %dir %{_sysconfdir}/resin
 %attr(0640,root,http) %config %verify(not size mtime md5) %{_sysconfdir}/resin/resin.conf
 %attr(0640,root,root) %config %verify(not size mtime md5) %{_sysconfdir}/sysconfig/resin
 %attr(0750,root,root) %{_sysconfdir}/logrotate.d
-
 %attr(0754,root,root) /etc/rc.d/init.d/resin
 %attr(0755,root,root) %{_bindir}/resin
-
 %dir /home/httpd/resin
 /home/httpd/resin/webapps
 %attr(0775,root,http) %dir /home/httpd/resin/WEB-INF
 /home/httpd/resin/WEB-INF/*
 %{_datadir}/resin
-
 %attr(770,root,http) %dir /var/log/resin
 %attr(660,root,http) %ghost /var/log/resin/*
 %attr(750,root,root) %dir /var/log/archiv/resin
-
 %defattr(660,root,http,0770)
 %{_localstatedir}/lib/resin/cache
 %{_localstatedir}/lib/resin/work
