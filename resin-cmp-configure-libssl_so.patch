@@ -18,3 +18,12 @@
    { echo "configure: error: Can't find valid OpenSSL in ${OPENSSL}" 1>&2; exit 1; }
  elif test ! -r "${OPENSSL}/include/openssl/ssl23.h"; then
    { echo "configure: error: Can't find valid OpenSSL in ${OPENSSL}" 1>&2; exit 1; }
+@@ -1998,7 +1998,7 @@
+ 
+   INCLUDES="$INCLUDES -I$OPENSSL/include"
+   SSL_OBJ=ssl.o
+-  PROXY_LIBS="$PROXY_LIBS $OPENSSL/lib/libssl.a $OPENSSL/lib/libcrypto.a"
++  PROXY_LIBS="$PROXY_LIBS -lssl -lcrypto"
+ fi
+ 
+ 
