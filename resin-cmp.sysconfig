@@ -1,5 +1,6 @@
 export JAVA_HOME=/usr/lib/java-sdk
 export RESIN_HOME=/usr/share/resin
+#export VERBOSE=yes
 export PID=/var/run/resin.pid
 export CONF=/etc/resin/resin.conf
 export STDOUT=/var/log/resin/stdout_log
