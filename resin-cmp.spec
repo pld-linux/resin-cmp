@@ -1,8 +1,8 @@
 Summary:	A fast servlet and JSP engine
 Summary(pl):	Szybki silnik servletów i JSP
 Name:		resin-cmp
-Version:	1.0.1
-Release:	6
+Version:	1.0.4
+Release:	1
 License:	Caucho Developer Source License
 Group:		Networking/Daemons/Java
 Group(de):	Netzwerkwesen/Server/Java
@@ -14,16 +14,10 @@ Source4:	%{name}.logrotate
 Source10:	%{name}-mod_caucho.conf
 Source11:	%{name}-conf_resin.conf
 Source12:	%{name}-conf_apache2resin.conf
-Source13:	%{name}-conf_browsers.conf
-Source14:	%{name}-conf_jdbc.conf
-Source15:	%{name}-conf_ping.conf
-Source16:	%{name}-conf_sessions.conf
-Source17:	%{name}-conf_ssl.conf
-Source18:	%{name}-conf_user-dirs.conf
-Source19:	%{name}-conf_examples-params.conf
-Source20:	%{name}-conf_examples-webapps.conf
+Source13:	%{name}-conf_examples-params.conf
+Source14:	%{name}-conf_examples-webapps.conf
+
 Patch0:		%{name}-configure-test-httpd.conf.patch
-# autoconf 2.5x is not working here
 Patch1:		%{name}-configure-libssl_so.patch
 Patch2:		%{name}-mod_caucho-ipv6.patch
 Patch3:		%{name}-makefile_in-jni_include.patch
@@ -42,6 +36,10 @@ Prereq:		/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 BuildRequires:	jdk >= 1.2 
 BuildRequires:	openssl-devel
+BuildRequires:  autoconf >= 1.4
+BuildRequires:  automake >= 1.4d
+BuildRequires:  libtool >= 1.4
+
 
 %description
 Resin-CMP brings Enterprise Java Bean's container managed persistence
@@ -122,6 +120,7 @@ Requires:	resin-cmp = %{version}
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
 Group(pl):	Sieciowe/Serwery
+Provides:	webserver
 
 %description hardcore
 Resin HardCore is a Linux kernel module. By pulling the webserver into
@@ -131,7 +130,7 @@ web-server, grabbing HTTP requests and passing them to the backend
 Resin JVMs. Because HardCore operates entirely in the kernel, it has
 very low overhead.
 
-Details on http://localhost:8880/java_tut/hardcore.xtp .
+Details at http://localhost:8880/java_tut/hardcore.xtp .
 
 %description hardcore -l pl
 Resin HardCore jest modu³em j±dra Linuksa. Poprzez wci±gniêcie serwera
@@ -154,8 +153,12 @@ Szczegó³y na http://localhost:8880/java_tut/hardcore.xtp .
 %patch4 -p1
 
 %build
-%configure2_13 \
+libtoolize --copy --force
+aclocal
+autoconf
+%configure \
 	--with-apache \
+	--with-apache-eapi \
 	--with-java-home=%{_libdir}/java-sdk \
 	--with-jni-include=%{_includedir}/jdk \
 	--with-openssl=%{_prefix} \
@@ -179,12 +182,12 @@ cp -R doc/*  $RPM_BUILD_ROOT/home/httpd/resin
 install src/c/plugin/resin/resin.o $RPM_BUILD_ROOT%{_datadir}/resin/libexec
 
 install %{SOURCE10} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/mod_caucho.conf
-for conf in %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{SOURCE15} \
-	%{SOURCE16} %{SOURCE17} %{SOURCE18} ; do
+
+for conf in %{SOURCE11} %{SOURCE12} ; do
 	install $conf \
 		$RPM_BUILD_ROOT%{_sysconfdir}/resin/$(basename $conf|sed "s/%{name}-conf_//")
 done
-for conf in %{SOURCE19} %{SOURCE20} ; do
+for conf in %{SOURCE13} %{SOURCE14} ; do
 	install $conf \
 		$RPM_BUILD_ROOT%{_sysconfdir}/resin/examples/$(basename $conf|sed "s/%{name}-conf_examples-//")
 done
@@ -229,6 +232,7 @@ if [ "$1" = "0" ]; then
 	if [ -f %{_localstatedir}/lock/subsys/httpd ]; then
 		/etc/rc.d/init.d/httpd restart 1>&2
 	fi
+	echo "You may want to disable apache2resin.conf in resin.conf"
 fi
 
 %post mod_caucho
@@ -241,41 +245,22 @@ if [ -f %{_localstatedir}/lock/subsys/httpd ]; then
 else
 	echo "Run \"/etc/rc.d/init.d/httpd start\" to start httpd daemon."
 fi
+echo "You may want to uncomment apache2resin.conf in resin.conf"
 
 %preun doc
-echo "Disabling examples in resin.conf"
-sed 's/<\(resin:include href="examples.*\)>/<!-- \1 -->/' \
-	%{_sysconfdir}/resin/resin.conf > \
-	%{_sysconfdir}/resin/resin.conf.tmp
-#cat is used to do not change permissions
-cat %{_sysconfdir}/resin/resin.conf.tmp > \
-	%{_sysconfdir}/resin/resin.conf
-rm -f %{_sysconfdir}/resin/resin.conf.tmp
-if [ -f %{_localstatedir}/lock/subsys/resin ]; then
-	/etc/rc.d/init.d/resin restart 1>&2
-fi
+echo "Don't forget to disable examples in resin.conf and restart resin-cmp"
 
 %post doc
 echo "Setting permissions to WEB-INF directories"
 find /home/httpd/resin -type d -name WEB-INF -exec chown -R root:http {} \; -exec chmod -R g+w {} \;
-echo "Enabling examples in resin.conf"
-sed 's/<!-- \(resin:include href="examples.*\) -->/<\1>/' \
-	%{_sysconfdir}/resin/resin.conf > \
-	%{_sysconfdir}/resin/resin.conf.tmp
-#cat is used to do not change permissions
-cat %{_sysconfdir}/resin/resin.conf.tmp > \
-	%{_sysconfdir}/resin/resin.conf
-rm -f %{_sysconfdir}/resin/resin.conf.tmp
-if [ -f %{_localstatedir}/lock/subsys/resin ]; then
-	/etc/rc.d/init.d/resin restart 1>&2
-fi
+echo "Don't forget to uncomment examples in resin.conf and restart resin-cmp"
 
 %files
 %defattr(644,root,root,755)
 %doc LICENSE.gz readme.txt.gz conf/*.gz
 
 %attr(0750,root,http) %dir %{_sysconfdir}/resin
-%attr(0640,root,http) %config %verify(not size mtime md5) %{_sysconfdir}/resin/*.conf
+%attr(0640,root,http) %config %verify(not size mtime md5) %{_sysconfdir}/resin/resin.conf
 %attr(0640,root,root) %config %verify(not size mtime md5) %{_sysconfdir}/sysconfig/resin
 %attr(0750,root,root) %{_sysconfdir}/logrotate.d
 
@@ -305,6 +290,7 @@ fi
 %files mod_caucho
 %defattr(644,root,root,755)
 %attr(0640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/httpd/mod_caucho.conf
+%attr(0640,root,http) %config %verify(not size mtime md5) %{_sysconfdir}/resin/apache2resin.conf
 %attr(0755,root,root) %{_libexecdir}/mod_caucho.so
 
 %files hardcore
