@@ -190,7 +190,7 @@ install src/c/plugin/apache/mod_caucho.so $RPM_BUILD_ROOT/%{_libexecdir}
 install src/c/plugin/resin/resin $RPM_BUILD_ROOT%{_bindir}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/resin
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/resin
-install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/logrotate.d
 
 touch $RPM_BUILD_ROOT/var/log/resin/{access,error,stdout,sterr}_log
 
@@ -253,7 +253,7 @@ echo "Don't forget to uncomment examples in resin.conf and restart resin-cmp"
 %attr(0750,root,http) %dir %{_sysconfdir}/resin
 %attr(0640,root,http) %config %verify(not size mtime md5) %{_sysconfdir}/resin/resin.conf
 %attr(0640,root,root) %config %verify(not size mtime md5) /etc/sysconfig/resin
-%attr(0750,root,root) %{_sysconfdir}/logrotate.d
+%attr(0750,root,root) /etc/logrotate.d
 %attr(0754,root,root) /etc/rc.d/init.d/resin
 %attr(0755,root,root) %{_bindir}/resin
 %dir /home/httpd/resin
