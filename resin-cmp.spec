@@ -1,11 +1,12 @@
+Unknown host cvs.pld.org.pl.
 Summary:	A fast servlet and JSP engine
 Name:		resin-cmp
 Version:	1.0.1
 Release:	4
 License:	Caucho Developer Source License
-Group:		Networking/Daemons
-Group(de):	Netzwerkwesen/Server
-Group(pl):	Sieciowe/Serwery
+Group:		Java/Networking/Daemons
+Group(de):	Java/Netzwerkwesen/Server
+Group(pl):	Java/Sieciowe/Serwery
 URL:		http://www.caucho.com/
 
 Source0:	http://www.caucho.com/download/%{name}-%{version}.tar.gz
@@ -14,16 +15,16 @@ Source2:	%{name}.init
 Source3:	%{name}.sysconfig
 Source4:	%{name}.logrotate
 Source10:	%{name}-mod_caucho.conf
-Source11: %{name}-conf_resin.conf
-Source12: %{name}-conf_apache2resin.conf
-Source13: %{name}-conf_browsers.conf
-Source14: %{name}-conf_jdbc.conf
-Source15: %{name}-conf_ping.conf
-Source16: %{name}-conf_sessions.conf
-Source17: %{name}-conf_ssl.conf
-Source18: %{name}-conf_user-dirs.conf
-Source19: %{name}-conf_examples-params.conf
-Source20: %{name}-conf_examples-webapps.conf
+Source11:	%{name}-conf_resin.conf
+Source12:	%{name}-conf_apache2resin.conf
+Source13:	%{name}-conf_browsers.conf
+Source14:	%{name}-conf_jdbc.conf
+Source15:	%{name}-conf_ping.conf
+Source16:	%{name}-conf_sessions.conf
+Source17:	%{name}-conf_ssl.conf
+Source18:	%{name}-conf_user-dirs.conf
+Source19:	%{name}-conf_examples-params.conf
+Source20:	%{name}-conf_examples-webapps.conf
 Patch0:		%{name}-configure-test-httpd.conf.patch
 # autoconf 2.5x is not working here
 Patch1:		%{name}-configure-libssl_so.patch
@@ -58,10 +59,10 @@ client's capability, from palm pilots to Mozilla.
 
 %package doc
 Summary:	Additional documentation for Resin
-Requires: resin-cmp = %{version}
-Group:		Networking/Daemons
-Group(de):	Netzwerkwesen/Server
-Group(pl):	Sieciowe/Serwery
+Requires:	resin-cmp = %{version}
+Group:		Java/Networking/Daemons
+Group(de):	Java/Netzwerkwesen/Server
+Group(pl):	Java/Sieciowe/Serwery
 
 %description doc
 Documentation for Resin. Contains:
@@ -76,8 +77,10 @@ Documentation for Resin. Contains:
 
 %package mod_caucho
 Summary:	Apache module for resin
-Requires: resin-cmp = %{version}
+Requires:	resin-cmp = %{version}
 Group:		Networking/Daemons
+Group(de):	Netzwerkwesen/Server
+Group(pl):	Sieciowe/Serwery
 Requires:	apache
 Requires:	apache(EAPI)
 BuildRequires:	apache-devel
@@ -99,8 +102,8 @@ Allows to use JSP requests under Apache
 %build
 %configure2_13 \
 	--with-apache \
-	--with-java-home=/usr/lib/java-sdk \
-	--with-jni-include=/usr/include/jdk \
+	--with-java-home=%{_libdir}/java-sdk \
+	--with-jni-include=%{_includedir}/jdk \
 	--with-openssl=%{_prefix} \
 	--enable-linux-smp
 
