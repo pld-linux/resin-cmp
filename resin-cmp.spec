@@ -1,3 +1,4 @@
+
 Summary:	A fast servlet and JSP engine
 Summary(pl):	Szybki silnik servletów i JSP
 Name:		resin-cmp
@@ -38,6 +39,7 @@ BuildRequires:	autoconf >= 1.4
 BuildRequires:	automake >= 1.4d
 BuildRequires:	libtool >= 1.4
 
+%define		apxs		/usr/sbin/apxs
 
 %description
 Resin-CMP brings Enterprise Java Bean's container managed persistence
