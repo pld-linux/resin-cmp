@@ -1,4 +1,3 @@
-
 Summary:	A fast servlet and JSP engine
 Summary(pl):	Szybki silnik servletów i JSP
 Name:		resin-cmp
@@ -15,31 +14,35 @@ Source11:	%{name}-conf_resin.conf
 Source12:	%{name}-conf_apache2resin.conf
 Source13:	%{name}-conf_examples-params.conf
 Source14:	%{name}-conf_examples-webapps.conf
-
 Patch0:		%{name}-configure-test-httpd.conf.patch
 Patch1:		%{name}-configure-libssl_so.patch
 Patch2:		%{name}-mod_caucho-ipv6.patch
 Patch3:		%{name}-makefile_in-jni_include.patch
 Patch4:		%{name}-pidfile.patch
 URL:		http://www.caucho.com/
-
+BuildRequires:	apache-devel
+BuildRequires:	autoconf >= 1.4
+BuildRequires:	automake >= 1.4d
+BuildRequires:	jdk >= 1.2
+BuildRequires:	libtool >= 1.4
+BuildRequires:	openssl-devel
+PreReq:		rc-scripts
+Requires(post,preun):	/sbin/chkconfig
+Requires:	jdk >= 1.2
+Requires:	sed
 # it's known it's better to use apache as http server, but
 # resin itself has got httpd too.
 Provides:	httpd
 Provides:	webserver
-Provides:	jsp, servlet, ejb
+Provides:	jsp
+Provides:	servlet
+Provides:	ejb
 Conflicts:	resin
-Requires:	jdk >= 1.2
-Requires:	sed
-Prereq:		/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-BuildRequires:	jdk >= 1.2
-BuildRequires:	openssl-devel
-BuildRequires:	autoconf >= 1.4
-BuildRequires:	automake >= 1.4d
-BuildRequires:	libtool >= 1.4
 
 %define		apxs		/usr/sbin/apxs
+%define		httpdir		/home/services/httpd
+%define		_libexecdir	%{_prefix}/lib/apache
 
 %description
 Resin-CMP brings Enterprise Java Bean's container managed persistence
@@ -68,8 +71,10 @@ zale¿nie od mo¿liwo¶ci klienta, od Palm Pilotów do Mozilli.
 %package doc
 Summary:	Additional documentation for Resin
 Summary(pl):	Dodatkowa dokumentacja do Resina
-Requires:	resin-cmp = %{version}
 Group:		Networking/Daemons/Java
+Requires(post):	fileutils
+Requires(post):	findutils
+Requires:	%{name} = %{version}
 
 %description doc
 Documentation for Resin. Contains:
@@ -96,12 +101,12 @@ Dokumentacja dla Resina. Zawiera:
 %package mod_caucho
 Summary:	Resin module for Apache
 Summary(pl):	Modu³ Resina dla Apache
-Requires:	resin-cmp = %{version}
 Group:		Networking/Daemons
-Requires:	apache
+Requires(post,preun):	%{apxs}
+Requires(post,preun):	grep
+Requires(preun):	fileutils
+Requires:	%{name} = %{version}
 Requires:	apache(EAPI)
-BuildRequires:	apache-devel
-Prereq:		%{_sbindir}/apxs
 
 %description mod_caucho
 Allows to serve JSP requests under Apache.
@@ -112,8 +117,8 @@ Pozwala obs³ugiwaæ ¿±dania JSP spod Apache.
 %package hardcore
 Summary:	Resin kernel module
 Summary(pl):	Modu³ j±dra do Resina
-Requires:	resin-cmp = %{version}
 Group:		Networking/Daemons
+Requires:	%{name} = %{version}
 Provides:	webserver
 
 %description hardcore
@@ -136,8 +141,6 @@ bardzo ma³e opó¼nienia.
 
 Szczegó³y na http://localhost:8880/java_tut/hardcore.xtp .
 
-%define		_libexecdir	%{_prefix}/lib/apache
-
 %prep
 %setup -q
 %patch0 -p1
@@ -153,9 +156,9 @@ Szczegó³y na http://localhost:8880/java_tut/hardcore.xtp .
 %configure \
 	--with-apache \
 	--with-apache-eapi \
-	--with-java-home=%{_libdir}/java-sdk \
-	--with-jni-include=%{_includedir}/jdk \
-	--with-openssl=%{_prefix} \
+	--with-java-home=/usr/lib/java \
+	--with-jni-include=/usr/lib/java/include \
+	--with-openssl=/usr \
 	--enable-linux-smp
 
 %{__make}
@@ -163,16 +166,16 @@ Szczegó³y na http://localhost:8880/java_tut/hardcore.xtp .
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_libexecdir} \
-	  $RPM_BUILD_ROOT%{_sysconfdir}/{resin/examples,rc.d/init.d,sysconfig} \
-	  $RPM_BUILD_ROOT%{_sysconfdir}/{logrotate.d,httpd} \
+	  $RPM_BUILD_ROOT%{_sysconfdir}/{resin/examples,httpd} \
+	  $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,logrotate.d} \
 	  $RPM_BUILD_ROOT%{_datadir}/resin/{lib,sql,xsl,libexec} \
-	  $RPM_BUILD_ROOT/home/httpd/resin/webapps \
+	  $RPM_BUILD_ROOT%{httpdir}/resin/webapps \
 	  $RPM_BUILD_ROOT%{_localstatedir}/{run,log,log/archiv}/resin \
 	  $RPM_BUILD_ROOT%{_localstatedir}/lib/resin/{cache,work,war_expand} \
-	  $RPM_BUILD_ROOT/%{_bindir}
+	  $RPM_BUILD_ROOT%{_bindir}
 
 cp -R bin lib xsl sql $RPM_BUILD_ROOT%{_datadir}/resin
-cp -R doc/*  $RPM_BUILD_ROOT/home/httpd/resin
+cp -R doc/*  $RPM_BUILD_ROOT%{httpdir}/resin
 install src/c/plugin/resin/resin.o $RPM_BUILD_ROOT%{_datadir}/resin/libexec
 
 install %{SOURCE10} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/mod_caucho.conf
@@ -186,7 +189,7 @@ for conf in %{SOURCE13} %{SOURCE14} ; do
 		$RPM_BUILD_ROOT%{_sysconfdir}/resin/examples/$(basename $conf|sed "s/%{name}-conf_examples-//")
 done
 
-install src/c/plugin/apache/mod_caucho.so $RPM_BUILD_ROOT/%{_libexecdir}
+install src/c/plugin/apache/mod_caucho.so $RPM_BUILD_ROOT%{_libexecdir}
 install src/c/plugin/resin/resin $RPM_BUILD_ROOT%{_bindir}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/resin
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/resin
@@ -197,16 +200,6 @@ touch $RPM_BUILD_ROOT/var/log/resin/{access,error,stdout,sterr}_log
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%preun
-if [ "$1" = "0" ]; then
-	if [ -f %{_localstatedir}/lock/subsys/resin ]; then
-		/etc/rc.d/init.d/resin stop 1>&2
-	fi
-	/sbin/chkconfig --del resin
-fi
-rm -rf %{_localstatedir}/lib/resin/cache/*
-rm -rf /home/httpd/resin/WEB-INF/{tmp,work}
-
 %post
 /sbin/chkconfig --add resin
 if [ -f %{_localstatedir}/lock/subsys/resin ]; then
@@ -215,17 +208,15 @@ else
 	echo "Run \"/etc/rc.d/init.d/resin start\" to start resin daemon."
 fi
 
-%preun mod_caucho
+%preun
 if [ "$1" = "0" ]; then
-	%{apxs} -e -A -n caucho %{_libexecdir}/mod_caucho.so 1>&2
-	grep -v "^Include.*mod_caucho.conf" /etc/httpd/httpd.conf > \
-		/etc/httpd/httpd.conf.tmp
-	mv -f /etc/httpd/httpd.conf.tmp /etc/httpd/httpd.conf
-	if [ -f %{_localstatedir}/lock/subsys/httpd ]; then
-		/etc/rc.d/init.d/httpd restart 1>&2
+	if [ -f %{_localstatedir}/lock/subsys/resin ]; then
+		/etc/rc.d/init.d/resin stop 1>&2
 	fi
-	echo "You may want to disable apache2resin.conf in resin.conf"
+	/sbin/chkconfig --del resin
 fi
+rm -rf %{_localstatedir}/lib/resin/cache/*
+rm -rf %{httpdir}/resin/WEB-INF/{tmp,work}
 
 %post mod_caucho
 %{apxs} -e -a -n caucho %{_libexecdir}/mod_caucho.so 1>&2
@@ -239,27 +230,40 @@ else
 fi
 echo "You may want to uncomment apache2resin.conf in resin.conf"
 
-%preun doc
-echo "Don't forget to disable examples in resin.conf and restart resin-cmp"
+%preun mod_caucho
+if [ "$1" = "0" ]; then
+	umask 027
+	%{apxs} -e -A -n caucho %{_libexecdir}/mod_caucho.so 1>&2
+	grep -v "^Include.*mod_caucho.conf" /etc/httpd/httpd.conf > \
+		/etc/httpd/httpd.conf.tmp
+	mv -f /etc/httpd/httpd.conf.tmp /etc/httpd/httpd.conf
+	if [ -f %{_localstatedir}/lock/subsys/httpd ]; then
+		/etc/rc.d/init.d/httpd restart 1>&2
+	fi
+	echo "You may want to disable apache2resin.conf in resin.conf"
+fi
 
 %post doc
 echo "Setting permissions to WEB-INF directories"
-find /home/httpd/resin -type d -name WEB-INF -exec chown -R root:http {} \; -exec chmod -R g+w {} \;
+find %{httpdir}/resin -type d -name WEB-INF -exec chown -R root:http {} \; -exec chmod -R g+w {} \;
 echo "Don't forget to uncomment examples in resin.conf and restart resin-cmp"
+
+%preun doc
+echo "Don't forget to disable examples in resin.conf and restart resin-cmp"
 
 %files
 %defattr(644,root,root,755)
 %doc LICENSE readme.txt conf/*
 %attr(0750,root,http) %dir %{_sysconfdir}/resin
-%attr(0640,root,http) %config %verify(not size mtime md5) %{_sysconfdir}/resin/resin.conf
-%attr(0640,root,root) %config %verify(not size mtime md5) /etc/sysconfig/resin
+%attr(0640,root,http) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/resin/resin.conf
+%attr(0640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/resin
 %attr(0750,root,root) /etc/logrotate.d
 %attr(0754,root,root) /etc/rc.d/init.d/resin
 %attr(0755,root,root) %{_bindir}/resin
-%dir /home/httpd/resin
-/home/httpd/resin/webapps
-%attr(0775,root,http) %dir /home/httpd/resin/WEB-INF
-/home/httpd/resin/WEB-INF/*
+%dir %{httpdir}/resin
+%{httpdir}/resin/webapps
+%attr(0775,root,http) %dir %{httpdir}/resin/WEB-INF
+%{httpdir}/resin/WEB-INF/*
 %{_datadir}/resin
 %attr(770,root,http) %dir /var/log/resin
 %attr(660,root,http) %ghost /var/log/resin/*
@@ -272,7 +276,7 @@ echo "Don't forget to uncomment examples in resin.conf and restart resin-cmp"
 %files doc
 %defattr(644,root,root,755)
 %attr(0750,root,http) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/resin/examples
-/home/httpd/resin
+%{httpdir}/resin
 
 %files mod_caucho
 %defattr(644,root,root,755)
