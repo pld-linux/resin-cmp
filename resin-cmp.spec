@@ -1,4 +1,5 @@
 Summary:	A fast servlet and JSP engine
+Summary(pl):	Szybki silnik servletów i JSP
 Name:		resin-cmp
 Version:	1.0.1
 Release:	6
@@ -6,8 +7,6 @@ License:	Caucho Developer Source License
 Group:		Networking/Daemons/Java
 Group(de):	Netzwerkwesen/Server/Java
 Group(pl):	Sieciowe/Serwery/Java
-URL:		http://www.caucho.com/
-
 Source0:	http://www.caucho.com/download/%{name}-%{version}.tar.gz
 Source2:	%{name}.init
 Source3:	%{name}.sysconfig
@@ -29,6 +28,7 @@ Patch1:		%{name}-configure-libssl_so.patch
 Patch2:		%{name}-mod_caucho-ipv6.patch
 Patch3:		%{name}-makefile_in-jni_include.patch
 Patch4:		%{name}-pidfile.patch
+URL:		http://www.caucho.com/
 
 # it's known it's better to use apache as http server, but
 # resin itself has got httpd too.
@@ -55,8 +55,21 @@ separation of content from style with its XSL support. Servlets can
 generate simple XML and use an XSL filter to format results for each
 client's capability, from palm pilots to Mozilla.
 
+%description -l pl
+Resin-CMP dostarcza aplikacjom servletowym Enterprise Java Bean's
+Container Managed Persistence (CMP), pozwalaj±c przyzwoitym witrynom
+wyeliminowaæ wpisane na sta³e wywo³ania JDBC bez potrzeby
+komplikowania rozproszonych obiektów.
+
+Resin-CMP zawiera Resina 2.0. Resin to szybki silnik servletowy i JSP,
+obs³uguj±cy load balancing aby osi±gn±æ wiêksz± niezawodno¶æ. Resin
+wspiera oddzielenie tre¶ci od stylu poprzez obs³ugê XSL. Servlety mog±
+generowaæ prosy XML i u¿ywaæ filtra XSL do formatowania wyników
+zale¿nie od mo¿liwo¶ci klienta, od Palm Pilotów do Mozilli.
+
 %package doc
 Summary:	Additional documentation for Resin
+Summary(pl):	Dodatkowa dokumentacja do Resina
 Requires:	resin-cmp = %{version}
 Group:		Networking/Daemons/Java
 Group(de):	Netzwerkwesen/Server/Java
@@ -73,8 +86,20 @@ Documentation for Resin. Contains:
 - Servlet Example, Virtual Hosts, Caching, Load Balancing
 - The Reference guide, The JavaDoc
 
+%description doc -l pl
+Dokumentacja dla Resina. Zawiera:
+- servlety demonstracyjne, FAQ
+- konfiguracje instalacji: dla samodzielnego Resina, Resina z Apache
+  pod uniksem, z Apache pod Win32, IIS, O'Reilly WebSite, Netscape.
+- podstawowy resin.conf: konfiguracja servletów, konfiguracja bazy
+  danych, konfiguracja aplikacji webowych, konfiguracja HTTP i srun,
+  ogólna konfiguracja Resina
+- przyk³ad servletu, wirtualnych hostów, cachowania, load balancingu
+- przewodnik, JavaDoc.
+
 %package mod_caucho
 Summary:	Resin module for Apache
+Summary(pl):	Modu³ Resina dla Apache
 Requires:	resin-cmp = %{version}
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
@@ -85,25 +110,38 @@ BuildRequires:	apache-devel
 Prereq:		%{_sbindir}/apxs
 
 %description mod_caucho
-Allows to serve JSP requests under Apache
+Allows to serve JSP requests under Apache.
+
+%description mod_caucho -l pl
+Pozwala obs³ugiwaæ ¿±dania JSP spod Apache.
 
 %package hardcore
 Summary:	Resin kernel module
+Summary(pl):	Modu³ j±dra do Resina
 Requires:	resin-cmp = %{version}
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
 Group(pl):	Sieciowe/Serwery
 
 %description hardcore
-Resin HardCore is a Linux kernel module. By pulling the
-webserver into the kernel single-computer Resin servers
-and load-balanced servers can greatly improve their
-performance. HardCore replaces Apache as a web-server,
-grabbing HTTP requests and passing them to the backend
-Resin JVMs. Because HardCore operates entirely in the
-kernel, it has very low overhead.
+Resin HardCore is a Linux kernel module. By pulling the webserver into
+the kernel single-computer Resin servers and load-balanced servers can
+greatly improve their performance. HardCore replaces Apache as a
+web-server, grabbing HTTP requests and passing them to the backend
+Resin JVMs. Because HardCore operates entirely in the kernel, it has
+very low overhead.
 
-Details on http://localhost:8880/java_tut/hardcore.xtp
+Details on http://localhost:8880/java_tut/hardcore.xtp .
+
+%description hardcore -l pl
+Resin HardCore jest modu³em j±dra Linuksa. Poprzez wci±gniêcie serwera
+WWW do j±dra, jednokomputerowe serwery Resin, jak i te z
+load-balancingiem mog± znacznie poprawiæ wydajno¶æ. HardCore zastêpuje
+Apache jako serwer WWW, pobieraj±c zapytania HTTP i przesy³aj±c je do
+backendu Resin JVM. Poniewa¿ HardCore dzia³a ca³kowicie w j±drze, ma
+bardzo ma³e opó¼nienia.
+
+Szczegó³y na http://localhost:8880/java_tut/hardcore.xtp .
 
 %define		_libexecdir	%{_prefix}/lib/apache
 
@@ -138,7 +176,7 @@ install -d $RPM_BUILD_ROOT%{_libexecdir} \
 
 cp -R bin lib xsl sql $RPM_BUILD_ROOT%{_datadir}/resin
 cp -R doc/*  $RPM_BUILD_ROOT/home/httpd/resin
-cp src/c/plugin/resin/resin.o $RPM_BUILD_ROOT%{_datadir}/resin/libexec
+install src/c/plugin/resin/resin.o $RPM_BUILD_ROOT%{_datadir}/resin/libexec
 
 install %{SOURCE10} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/mod_caucho.conf
 for conf in %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{SOURCE15} \
@@ -160,6 +198,9 @@ install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 touch $RPM_BUILD_ROOT/var/log/resin/{access,error,stdout,sterr}_log
 
 gzip -9nf LICENSE readme.txt conf/*
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %preun
 if [ "$1" = "0" ]; then
@@ -209,7 +250,7 @@ sed 's/<\(resin:include href="examples.*\)>/<!-- \1 -->/' \
 #cat is used to do not change permissions
 cat %{_sysconfdir}/resin/resin.conf.tmp > \
 	%{_sysconfdir}/resin/resin.conf
-rm %{_sysconfdir}/resin/resin.conf.tmp
+rm -f %{_sysconfdir}/resin/resin.conf.tmp
 if [ -f %{_localstatedir}/lock/subsys/resin ]; then
 	/etc/rc.d/init.d/resin restart 1>&2
 fi
@@ -224,13 +265,10 @@ sed 's/<!-- \(resin:include href="examples.*\) -->/<\1>/' \
 #cat is used to do not change permissions
 cat %{_sysconfdir}/resin/resin.conf.tmp > \
 	%{_sysconfdir}/resin/resin.conf
-rm %{_sysconfdir}/resin/resin.conf.tmp
+rm -f %{_sysconfdir}/resin/resin.conf.tmp
 if [ -f %{_localstatedir}/lock/subsys/resin ]; then
 	/etc/rc.d/init.d/resin restart 1>&2
 fi
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
