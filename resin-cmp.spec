@@ -9,7 +9,6 @@ Group(pl):	Sieciowe/Serwery/Java
 URL:		http://www.caucho.com/
 
 Source0:	http://www.caucho.com/download/%{name}-%{version}.tar.gz
-Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}.sysconfig
 Source4:	%{name}.logrotate
