@@ -145,7 +145,7 @@ Szczegó³y na http://localhost:8880/java_tut/hardcore.xtp .
 %patch4 -p1
 
 %build
-libtoolize --copy --force
+%{__libtoolize}
 aclocal
 %{__autoconf}
 %configure \
