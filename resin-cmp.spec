@@ -1,7 +1,7 @@
 Summary:	A fast servlet and JSP engine
 Name:		resin-cmp
 Version:	1.0.1
-Release:	1
+Release:	2
 License:	Caucho Developer Source License
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
@@ -11,6 +11,7 @@ Source0:	http://www.caucho.com/download/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}.sysconfig
+Source4:	%{name}-mod_caucho.conf
 Patch0:		%{name}-configure-test-httpd.conf.patch
 # autoconf 2.5x is not working here
 Patch1:		%{name}-configure-libssl_so.patch
@@ -102,12 +103,16 @@ install src/c/plugin/apache/mod_caucho.so $RPM_BUILD_ROOT/%{_libexecdir}
 install src/c/plugin/resin/resin $RPM_BUILD_ROOT%{_datadir}/resin/bin
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/resin
 install %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/resin
+install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/mod_caucho.conf
 
 gzip -9nf LICENSE readme.txt conf/*
 
 %preun
 if [ "$1" = "0" ]; then
 	%{_sbindir}/apxs -e -A -n caucho %{_libexecdir}/mod_caucho.so 1>&2
+	grep -v -q "^Include.*mod_caucho.conf" /etc/httpd/httpd.conf > \
+		/etc/httpd/httpd.conf.tmp
+	mv -f /etc/httpd/httpd.conf.tmp /etc/httpd/httpd.conf
 	if [ -f /var/lock/subsys/httpd ]; then
 		/etc/rc.d/init.d/httpd restart 1>&2
 	fi
@@ -123,7 +128,11 @@ rm -rf /var/log/resin/*
 %post
 /sbin/chkconfig --add resin
 %{_sbindir}/apxs -e -a -n caucho %{_libexecdir}/mod_caucho.so 1>&2
-ln -fs %{_datadir}/resin/conf/resin.conf %{_sysconfdir}/httpd
+if [ -f /etc/httpd/httpd.conf ] && \
+	! grep -q "^Include.*mod_caucho.conf" /etc/httpd/httpd.conf; then
+	echo "Include /etc/httpd/mod_caucho.conf" >> /etc/httpd/httpd.conf
+fi
+
 if [ -f /var/lock/subsys/httpd ]; then
 	if [ -f /var/lock/subsys/resin ]; then
 		/etc/rc.d/init.d/resin restart 1>&2
@@ -133,10 +142,9 @@ if [ -f /var/lock/subsys/httpd ]; then
 	/etc/rc.d/init.d/httpd restart 1>&2
 else
 	echo "Run \"/etc/rc.d/init.d/resin start\" to start resin daemon."
-	echo "Run \"/etc/rc.d/init.d/httpd start\" to start apache http daemon."
 fi
 
-%preun doc
+%postun doc
 # it's not very smart solution.. ;-)
 echo "Removing WEB-INF directories"
 find /home/httpd/resin -type d -name WEB-INF -exec rm -rf {} \;
@@ -152,6 +160,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc LICENSE.gz readme.txt.gz conf/*.gz
 
+%attr(0640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/httpd/mod_caucho.conf
 %attr(0660,root,http) %config(noreplace) %verify(not size mtime md5) %{_datadir}/resin/conf/resin.conf
 %attr(0640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/sysconfig/resin
 %attr(0754,root,root) /etc/rc.d/init.d/resin
