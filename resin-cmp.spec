@@ -147,7 +147,7 @@ Szczegó³y na http://localhost:8880/java_tut/hardcore.xtp .
 %build
 libtoolize --copy --force
 aclocal
-autoconf
+%{__autoconf}
 %configure \
 	--with-apache \
 	--with-apache-eapi \
