@@ -1,0 +1,20 @@
+--- resin-cmp-1.0.1.orig/configure	Fri Aug 31 17:02:52 2001
++++ resin-cmp-1.0.1/configure	Fri Aug 31 17:10:41 2001
+@@ -1963,7 +1963,7 @@
+   
+ OPENSSL=${withval}
+ 
+-if test ! -r "${OPENSSL}/lib/libssl.a"; then
++if test ! -r "${OPENSSL}/lib/libssl.so"; then
+   { echo "configure: error: Can't find valid OpenSSL ${openssl}" 1>&2; exit 1; }
+ fi
+ 
+@@ -1981,7 +1981,7 @@
+ 
+ if test -z "${OPENSSL}"; then
+   foo=bar
+-elif test ! -r "${OPENSSL}/lib/libssl.a"; then
++elif test ! -r "${OPENSSL}/lib/libssl.so"; then
+   { echo "configure: error: Can't find valid OpenSSL in ${OPENSSL}" 1>&2; exit 1; }
+ elif test ! -r "${OPENSSL}/include/openssl/ssl23.h"; then
+   { echo "configure: error: Can't find valid OpenSSL in ${OPENSSL}" 1>&2; exit 1; }
