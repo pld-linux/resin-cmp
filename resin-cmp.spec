@@ -6,6 +6,7 @@ Release:	1
 License:	Caucho Developer Source License
 Group:		Networking/Daemons/Java
 Source0:	http://www.caucho.com/download/%{name}-%{version}.tar.gz
+# Source0-md5:	f1f794fd9ed9f8c90c3832a99f2227d5
 Source2:	%{name}.init
 Source3:	%{name}.sysconfig
 Source4:	%{name}.logrotate
