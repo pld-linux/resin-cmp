@@ -1,0 +1,69 @@
+Binary files resin-cmp-1.0.1.orig/src/c/plugin/resin/.resin.c.swp and resin-cmp-1.0.1/src/c/plugin/resin/.resin.c.swp differ
+diff -Nru resin-cmp-1.0.1.orig/src/c/plugin/resin/resin.c resin-cmp-1.0.1/src/c/plugin/resin/resin.c
+--- resin-cmp-1.0.1.orig/src/c/plugin/resin/resin.c	Sat Sep 15 08:57:38 2001
++++ resin-cmp-1.0.1/src/c/plugin/resin/resin.c	Sat Sep 15 09:07:27 2001
+@@ -985,7 +985,7 @@
+ static void
+ fork_server(int argc, char **argv)
+ {
+-  char *pid = "resin";
++  char *pid = "/var/run/resin.pid";
+   char pid_file[1024];
+   int fd;
+   int pipes[2];
+@@ -999,10 +999,10 @@
+   if (g_options.pid)
+     pid = g_options.pid;
+   
+-  sprintf(pid_file, "%s/%s.pid", g_options.server_root, pid);
++  sprintf(pid_file, "%s", pid);
+ 
+   if (! stat(pid_file, &st)) {
+-    fprintf(stderr, "server %s.pid has already started.\n", pid);
++    fprintf(stderr, "server %s has already started.\n", pid);
+     exit(1);
+   }
+ 
+@@ -1070,7 +1070,7 @@
+ static void
+ stop_server()
+ {
+-  char *pid = "resin.pid";
++  char *pid = "/var/run/resin.pid";
+   char pid_file[1024];
+   struct stat st;
+   FILE *file;
+@@ -1079,7 +1079,7 @@
+   if (g_options.pid)
+     pid = g_options.pid;
+   
+-  sprintf(pid_file, "%s/%s", g_options.server_root, pid);
++  sprintf(pid_file, "%s", pid);
+ 
+   if (stat(pid_file, &st)) {
+     fprintf(stderr, "no server %s has been started.\n", pid);
+@@ -1123,13 +1123,13 @@
+   int fd;
+ 
+   sprintf(log_path, "%s/log", g_options.server_root);
+-  mkdir(log_path, 0775);
++  mkdir(log_path, 0770);
+ 
+   if (is_path_absolute(g_options.stdout_path))
+     sprintf(log_path, "%s", g_options.stdout_path);
+   else
+     sprintf(log_path, "%s/%s", g_options.server_root, g_options.stdout_path);
+-  fd = open(log_path, O_RDWR|O_CREAT|O_APPEND, 0664);
++  fd = open(log_path, O_RDWR|O_CREAT|O_APPEND, 0660);
+   
+   dup2(fd, 1);
+   close(fd);
+@@ -1138,7 +1138,7 @@
+     sprintf(log_path, "%s", g_options.stderr_path);
+   else
+     sprintf(log_path, "%s/%s", g_options.server_root, g_options.stderr_path);
+-  fd = open(log_path, O_RDWR|O_CREAT|O_APPEND, 0664);
++  fd = open(log_path, O_RDWR|O_CREAT|O_APPEND, 0660);
+   dup2(fd, 2);
+   close(fd);
+ }
