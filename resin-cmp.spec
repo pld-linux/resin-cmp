@@ -148,7 +148,7 @@ Szczegó³y na http://localhost:8880/java_tut/hardcore.xtp .
 
 %build
 %{__libtoolize}
-aclocal
+%{__aclocal}
 %{__autoconf}
 %configure \
 	--with-apache \
