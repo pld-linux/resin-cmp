@@ -1,13 +1,34 @@
---- resin-cmp-1.0.1/src/c/plugin/apache/mod_caucho.c	Tue Aug 28 02:07:19 2001
-+++ resin-cmp-1.0.1.orig/src/c/plugin/apache/mod_caucho.c	Fri Aug 31 18:22:35 2001
-@@ -495,7 +495,9 @@
+diff -Nru resin-cmp-1.0.1.orig/src/c/plugin/apache/mod_caucho.c resin-cmp-1.0.1/src/c/plugin/apache/mod_caucho.c
+--- resin-cmp-1.0.1.orig/src/c/plugin/apache/mod_caucho.c	Tue Sep 11 15:25:51 2001
++++ resin-cmp-1.0.1/src/c/plugin/apache/mod_caucho.c	Tue Sep 11 15:26:16 2001
+@@ -53,6 +53,8 @@
+ #include "cse.h"
+ #include "version.h"
+ 
++#include <netdb.h>
++
+ /*
+  * Apache magic module declaration.
+  */
+@@ -463,6 +465,7 @@
+ write_env(stream_t *s, request_rec *r)
+ {
+   char buf[4096];
++  char pbuf[10];
+   int ch;
+   int i;
+   
+@@ -494,8 +497,11 @@
+     cse_write_string(s, CSE_REMOTE_HOST, c->remote_ip);
  
    cse_write_string(s, CSE_REMOTE_ADDR, c->remote_ip);
-   cse_write_string(s, CSE_REMOTE_PORT,
+-  cse_write_string(s, CSE_REMOTE_PORT,
 -		   ap_psprintf(r->pool, "%d", ntohs(c->remote_addr.sin_port)));
-+		   ap_psprintf(r->pool, "%d", 
-+            ntohs(((struct sockaddr_in *)
-+               &c->remote_addr)->sin_port)));
++
++  getnameinfo((struct sockaddr *)&c->remote_addr, 
++        sizeof(struct sockaddr_storage), NULL, 0, 
++        pbuf, sizeof(pbuf), NI_NUMERICSERV);
++  cse_write_string(s, CSE_REMOTE_PORT, ap_psprintf(r->pool, "%s", pbuf));
    
    if (c->user)
      cse_write_string(s, CSE_REMOTE_USER, c->user);
