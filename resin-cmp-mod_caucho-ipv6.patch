@@ -1,0 +1,13 @@
+--- resin-cmp-1.0.1/src/c/plugin/apache/mod_caucho.c	Tue Aug 28 02:07:19 2001
++++ resin-cmp-1.0.1.orig/src/c/plugin/apache/mod_caucho.c	Fri Aug 31 18:22:35 2001
+@@ -495,7 +495,9 @@
+ 
+   cse_write_string(s, CSE_REMOTE_ADDR, c->remote_ip);
+   cse_write_string(s, CSE_REMOTE_PORT,
+-		   ap_psprintf(r->pool, "%d", ntohs(c->remote_addr.sin_port)));
++		   ap_psprintf(r->pool, "%d", 
++            ntohs(((struct sockaddr_in *)
++               &c->remote_addr)->sin_port)));
+   
+   if (c->user)
+     cse_write_string(s, CSE_REMOTE_USER, c->user);
