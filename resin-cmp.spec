@@ -1,8 +1,7 @@
-Unknown host cvs.pld.org.pl.
 Summary:	A fast servlet and JSP engine
 Name:		resin-cmp
 Version:	1.0.1
-Release:	4
+Release:	5
 License:	Caucho Developer Source License
 Group:		Networking/Daemons/Java
 Group(de):	Netzwerkwesen/Server/Java
@@ -117,7 +116,7 @@ install -d $RPM_BUILD_ROOT%{_libexecdir} \
 	  $RPM_BUILD_ROOT%{_datadir}/resin/{lib,sql,xsl} \
 	  $RPM_BUILD_ROOT/home/httpd/resin/webapps \
 	  $RPM_BUILD_ROOT%{_localstatedir}/{run,log,log/archiv}/resin \
-	  $RPM_BUILD_ROOT%{_localstatedir}/lib/resin/cache \
+	  $RPM_BUILD_ROOT%{_localstatedir}/lib/resin/{cache,work,war_expand} \
 	  $RPM_BUILD_ROOT/%{_bindir}
 
 cp -R bin lib xsl sql $RPM_BUILD_ROOT%{_datadir}/resin
@@ -188,8 +187,10 @@ echo "Disabling examples in resin.conf"
 sed 's/<\(resin:include href="examples.*\)>/<!-- \1 -->/' \
 	%{_sysconfdir}/resin/resin.conf > \
 	%{_sysconfdir}/resin/resin.conf.tmp
+#cat is used to do not change permissions
 cat %{_sysconfdir}/resin/resin.conf.tmp > \
 	%{_sysconfdir}/resin/resin.conf
+rm %{_sysconfdir}/resin/resin.conf.tmp
 if [ -f %{_localstatedir}/lock/subsys/resin ]; then
 	/etc/rc.d/init.d/resin restart 1>&2
 fi
@@ -201,8 +202,10 @@ echo "Enabling examples in resin.conf"
 sed 's/<!-- \(resin:include href="examples.*\) -->/<\1>/' \
 	%{_sysconfdir}/resin/resin.conf > \
 	%{_sysconfdir}/resin/resin.conf.tmp
+#cat is used to do not change permissions
 cat %{_sysconfdir}/resin/resin.conf.tmp > \
 	%{_sysconfdir}/resin/resin.conf
+rm %{_sysconfdir}/resin/resin.conf.tmp
 if [ -f %{_localstatedir}/lock/subsys/resin ]; then
 	/etc/rc.d/init.d/resin restart 1>&2
 fi
@@ -215,8 +218,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE.gz readme.txt.gz conf/*.gz
 
 %attr(0750,root,http) %dir %{_sysconfdir}/resin
-%attr(0640,root,http) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/resin/*.conf
-%attr(0640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/sysconfig/resin
+%attr(0640,root,http) %config %verify(not size mtime md5) %{_sysconfdir}/resin/*.conf
+%attr(0640,root,root) %config %verify(not size mtime md5) %{_sysconfdir}/sysconfig/resin
 %attr(0750,root,root) %{_sysconfdir}/logrotate.d
 
 %attr(0754,root,root) /etc/rc.d/init.d/resin
@@ -228,11 +231,14 @@ rm -rf $RPM_BUILD_ROOT
 /home/httpd/resin/WEB-INF/*
 %{_datadir}/resin
 
-%attr(750,root,root) %dir /var/log/resin
+%attr(770,root,http) %dir /var/log/resin
+%attr(660,root,http) %ghost /var/log/resin/*
 %attr(750,root,root) %dir /var/log/archiv/resin
-%attr(640,root,root) %ghost /var/log/resin/*
 
-%attr(770,root,http) %{_localstatedir}/lib/resin/cache
+%defattr(660,root,http,0770) 
+%{_localstatedir}/lib/resin/cache
+%{_localstatedir}/lib/resin/work
+%{_localstatedir}/lib/resin/war_expand
 
 %files doc
 %defattr(644,root,root,755)
