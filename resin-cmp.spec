@@ -5,8 +5,6 @@ Version:	1.0.4
 Release:	1
 License:	Caucho Developer Source License
 Group:		Networking/Daemons/Java
-Group(de):	Netzwerkwesen/Server/Java
-Group(pl):	Sieciowe/Serwery/Java
 Source0:	http://www.caucho.com/download/%{name}-%{version}.tar.gz
 Source2:	%{name}.init
 Source3:	%{name}.sysconfig
@@ -70,8 +68,6 @@ Summary:	Additional documentation for Resin
 Summary(pl):	Dodatkowa dokumentacja do Resina
 Requires:	resin-cmp = %{version}
 Group:		Networking/Daemons/Java
-Group(de):	Netzwerkwesen/Server/Java
-Group(pl):	Sieciowe/Serwery/Java
 
 %description doc
 Documentation for Resin. Contains:
@@ -100,8 +96,6 @@ Summary:	Resin module for Apache
 Summary(pl):	Modu³ Resina dla Apache
 Requires:	resin-cmp = %{version}
 Group:		Networking/Daemons
-Group(de):	Netzwerkwesen/Server
-Group(pl):	Sieciowe/Serwery
 Requires:	apache
 Requires:	apache(EAPI)
 BuildRequires:	apache-devel
@@ -118,8 +112,6 @@ Summary:	Resin kernel module
 Summary(pl):	Modu³ j±dra do Resina
 Requires:	resin-cmp = %{version}
 Group:		Networking/Daemons
-Group(de):	Netzwerkwesen/Server
-Group(pl):	Sieciowe/Serwery
 Provides:	webserver
 
 %description hardcore
