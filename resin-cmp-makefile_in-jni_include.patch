@@ -1,0 +1,25 @@
+Binary files resin-cmp-1.0.1.orig/src/c/plugin/resin/.Makefile.in.swp and resin-cmp-1.0.1/src/c/plugin/resin/.Makefile.in.swp differ
+diff -Nru resin-cmp-1.0.1.orig/src/c/plugin/resin/Makefile.in resin-cmp-1.0.1/src/c/plugin/resin/Makefile.in
+--- resin-cmp-1.0.1.orig/src/c/plugin/resin/Makefile.in	Tue Sep 11 15:57:21 2001
++++ resin-cmp-1.0.1/src/c/plugin/resin/Makefile.in	Tue Sep 11 15:57:37 2001
+@@ -10,7 +10,7 @@
+ resin_conf=@apache_conf@
+ resin_libexec=@apache_libexec@
+ resin_home=@resin_home@
+-JNI_INCLUDE=@JNI_INCLUDE@
++JNI_INCLUDE=-I@JNI_INCLUDE@
+ INCLUDES = @INCLUDES@ $(JNI_INCLUDE) -I../common
+ CFLAGS = @CFLAGS@ -DRESIN_HOME=\"$(resin_home)\" $(INCLUDES) -DCPU=\"$(CPU)\" -DOS=$(OS)
+ OBJ=../common/common.o cache.o response.o request.o int_map.o jni_vfs.o server.o memory.o @SSL_OBJ@
+diff -Nru resin-cmp-1.0.1.orig/src/c/jni/Makefile.in resin-cmp-1.0.1/src/c/jni/Makefile.in
+--- resin-cmp-1.0.1.orig/src/c/jni/Makefile.in	Tue Sep 11 15:57:21 2001
++++ resin-cmp-1.0.1/src/c/jni/Makefile.in	Tue Sep 11 16:02:33 2001
+@@ -9,7 +9,7 @@
+ LDFLAGS=@LDFLAGS@
+ LDFLAGS_SHLIB=@LDFLAGS_SHLIB@
+ 
+-JNI_INCLUDE=@JNI_INCLUDE@
++JNI_INCLUDE=-I@JNI_INCLUDE@
+ INCLUDES = $(JNI_INCLUDE)
+ 
+ OBJ=caucho.lo
