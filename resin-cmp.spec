@@ -217,7 +217,7 @@ fi
 
 %preun mod_caucho
 if [ "$1" = "0" ]; then
-	%{_sbindir}/apxs -e -A -n caucho %{_libexecdir}/mod_caucho.so 1>&2
+	%{apxs} -e -A -n caucho %{_libexecdir}/mod_caucho.so 1>&2
 	grep -v "^Include.*mod_caucho.conf" /etc/httpd/httpd.conf > \
 		/etc/httpd/httpd.conf.tmp
 	mv -f /etc/httpd/httpd.conf.tmp /etc/httpd/httpd.conf
@@ -228,7 +228,7 @@ if [ "$1" = "0" ]; then
 fi
 
 %post mod_caucho
-%{_sbindir}/apxs -e -a -n caucho %{_libexecdir}/mod_caucho.so 1>&2
+%{apxs} -e -a -n caucho %{_libexecdir}/mod_caucho.so 1>&2
 if ! grep -q "^Include.*mod_caucho.conf" /etc/httpd/httpd.conf ; then
 	echo "Include /etc/httpd/mod_caucho.conf" >> /etc/httpd/httpd.conf
 fi
