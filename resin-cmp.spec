@@ -1,7 +1,7 @@
 Summary:	A fast servlet and JSP engine
 Name:		resin-cmp
 Version:	1.0.1
-Release:	5
+Release:	6
 License:	Caucho Developer Source License
 Group:		Networking/Daemons/Java
 Group(de):	Netzwerkwesen/Server/Java
@@ -75,7 +75,7 @@ Documentation for Resin. Contains:
 - The Reference guide, The JavaDoc
 
 %package mod_caucho
-Summary:	Apache module for resin
+Summary:	Resin module for Apache
 Requires:	resin-cmp = %{version}
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
@@ -86,7 +86,25 @@ BuildRequires:	apache-devel
 Prereq:		%{_sbindir}/apxs
 
 %description mod_caucho
-Allows to use JSP requests under Apache
+Allows to serve JSP requests under Apache
+
+%package hardcore
+Summary:	Resin kernel module
+Requires:	resin-cmp = %{version}
+Group:		Networking/Daemons
+Group(de):	Netzwerkwesen/Server
+Group(pl):	Sieciowe/Serwery
+
+%description hardcore
+Resin HardCore is a Linux kernel module. By pulling the
+webserver into the kernel single-computer Resin servers
+and load-balanced servers can greatly improve their
+performance. HardCore replaces Apache as a web-server,
+grabbing HTTP requests and passing them to the backend
+Resin JVMs. Because HardCore operates entirely in the
+kernel, it has very low overhead.
+
+Details on http://localhost:8880/java_tut/hardcore.xtp
 
 %define		_libexecdir	%{_prefix}/lib/apache
 
@@ -113,7 +131,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_libexecdir} \
 	  $RPM_BUILD_ROOT%{_sysconfdir}/{resin/examples,rc.d/init.d,sysconfig} \
 	  $RPM_BUILD_ROOT%{_sysconfdir}/{logrotate.d,httpd} \
-	  $RPM_BUILD_ROOT%{_datadir}/resin/{lib,sql,xsl} \
+	  $RPM_BUILD_ROOT%{_datadir}/resin/{lib,sql,xsl,libexec} \
 	  $RPM_BUILD_ROOT/home/httpd/resin/webapps \
 	  $RPM_BUILD_ROOT%{_localstatedir}/{run,log,log/archiv}/resin \
 	  $RPM_BUILD_ROOT%{_localstatedir}/lib/resin/{cache,work,war_expand} \
@@ -121,6 +139,7 @@ install -d $RPM_BUILD_ROOT%{_libexecdir} \
 
 cp -R bin lib xsl sql $RPM_BUILD_ROOT%{_datadir}/resin
 cp -R doc/*  $RPM_BUILD_ROOT/home/httpd/resin
+cp src/c/plugin/resin/resin.o $RPM_BUILD_ROOT%{_datadir}/resin/libexec
 
 install %{SOURCE10} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/mod_caucho.conf
 for conf in %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{SOURCE15} \
@@ -137,6 +156,7 @@ install src/c/plugin/apache/mod_caucho.so $RPM_BUILD_ROOT/%{_libexecdir}
 install src/c/plugin/resin/resin $RPM_BUILD_ROOT%{_bindir}
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/resin
 install %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/resin
+install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 
 touch $RPM_BUILD_ROOT/var/log/resin/{access,error,stdout,sterr}_log
 
@@ -249,3 +269,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(0640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/httpd/mod_caucho.conf
 %attr(0755,root,root) %{_libexecdir}/mod_caucho.so
+
+%files hardcore
+%defattr(644,root,root,755)
+%attr(0755,root,root) %{_datadir}/resin/libexec/resin.o
