@@ -26,7 +26,7 @@ BuildRequires:	autoconf >= 1.4
 BuildRequires:	automake >= 1.4d
 BuildRequires:	jdk >= 1.2
 BuildRequires:	libtool >= 1.4
-BuildRequires:	openssl-devel >= 0.9.7
+BuildRequires:	openssl-devel >= 0.9.7c
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	jdk >= 1.2
