@@ -29,7 +29,8 @@ Prereq:		/sbin/chkconfig
 Prereq:		%{_sbindir}/apxs
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 BuildRequires:	apache-devel
-BuildRequires:	java >= 1.1
+# to make it consistent with Requires -- ibm-java-sdk conflicts with kaffe
+BuildRequires:	ibm-java-sdk >= 1.2 
 BuildRequires:	openssl-devel
 
 %description
@@ -73,9 +74,10 @@ Documentation for Resin. Contains:
 %build
 %configure2_13 \
 	--with-apache \
+	--with-java-home=/usr/lib/java-sdk \
 	--with-openssl=%{_prefix} \
 	--enable-linux-smp
-# does it work?
+# why configure searchs it in kernel dir?
 #	--enable-jni 
 			
 %{__make} 
