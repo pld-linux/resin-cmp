@@ -1,12 +1,12 @@
 #!/bin/sh
 #
-# resin   
+# resin
 #
-# chkconfig:   345 66 45
+# chkconfig:	345 66 45
 #
-# description: Resin is a Java Web server.
+# description:	Resin is a Java Web server.
 #
-# id:      $Id$
+# id:		$Id$
 #
 
 # Source function library
@@ -19,68 +19,73 @@
 [ -f /etc/sysconfig/resin ] && . /etc/sysconfig/resin
 
 # Check that networking is up.
-if is_no "${NETWORKING}"; then
-   msg_Network_Down resin
-   exit 1
+if is_yes "${NETWORKING}"; then
+	if [ ! -f /var/lock/subsys/network ]; then
+		msg_network_down resin
+		exit 1
+	fi
+else
+	exit 0
 fi
 
 PARAMS="-conf $CONF -stdout $STDOUT -stderr $STDERR -pid $PID"
 
 action() {
-   act=$1
-   if [ $act = "stop" ]; then
-      msg_stopping resin
-   elif [ $act = "start" ]; then
-      msg_starting resin
-   else
-      echo 'error: use action() <stop|start>'
-      return 1
-   fi
+	act=$1
+	if [ $act = "stop" ]; then
+		msg_stopping resin
+	elif [ $act = "start" ]; then
+		msg_starting resin
+	else
+		echo 'error: use action() <stop|start>'
+		return 1
+	fi
 
-   if [ -z "$VERBOSE" ]; then
-      busy
-         /usr/bin/resin $PARAMS $act > /dev/null 2> /dev/null
-      ok
-   else
-      /usr/bin/resin $PARAMS -verbose $act
-   fi
-   return 0
+	if [ -z "$VERBOSE" ]; then
+		busy
+			/usr/bin/resin $PARAMS $act > /dev/null 2> /dev/null
+		ok
+	else
+		/usr/bin/resin $PARAMS -verbose $act
+	fi
+	return 0
 }
+
 
 # See how we were called.
 case "$1" in
   start)
-   # Check if the service is already running?
-   if [ ! -f /var/lock/subsys/resin ]; then
-      action start
-      touch /var/lock/subsys/resin
-      RETVAL=0
-   else
-      msg_Already_Running resin
-      exit 1
-   fi
-   ;;
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/resin ]; then
+		action start
+		touch /var/lock/subsys/resin
+		RETVAL=0
+	else
+		msg_already_running resin
+		exit 1
+	fi
+	;;
   stop)
-   if [ -f /var/lock/subsys/resin ]; then
-      action stop
-      rm -f /var/lock/subsys/resin >/dev/null 2>&1
-      RETVAL=0
-   else
-      msg_Not_Running resin
-      exit 1
-   fi   
-   ;;
-  restart)
-     $0 stop
-     $0 start
-   ;;
+	if [ -f /var/lock/subsys/resin ]; then
+		action stop
+		rm -f /var/lock/subsys/resin >/dev/null 2>&1
+		RETVAL=0
+	else
+		msg_not_running resin
+		exit 1
+	fi	
+	;;
+  restart|reload)
+	$0 stop
+	$0 start
+	;;
   status)
-   status resin
-   exit $?
-   ;;
+	status resin
+	exit $?
+	;;
   *)
-   msg_Usage "$0 {start|stop|status|restart}"
-   exit 1
+	msg_usage "$0 {start|stop|restart|reload|status}"
+	exit 1
 esac
 
 exit $RETVAL
