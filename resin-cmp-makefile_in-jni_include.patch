@@ -1,4 +1,3 @@
-Binary files resin-cmp-1.0.1.orig/src/c/plugin/resin/.Makefile.in.swp and resin-cmp-1.0.1/src/c/plugin/resin/.Makefile.in.swp differ
 diff -Nru resin-cmp-1.0.1.orig/src/c/plugin/resin/Makefile.in resin-cmp-1.0.1/src/c/plugin/resin/Makefile.in
 --- resin-cmp-1.0.1.orig/src/c/plugin/resin/Makefile.in	Tue Sep 11 15:57:21 2001
 +++ resin-cmp-1.0.1/src/c/plugin/resin/Makefile.in	Tue Sep 11 15:57:37 2001

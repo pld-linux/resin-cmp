@@ -1,24 +1,25 @@
---- resin-cmp-1.0.1.orig/configure	Fri Aug 31 17:02:52 2001
-+++ resin-cmp-1.0.1/configure	Fri Aug 31 17:10:41 2001
-@@ -1963,7 +1963,7 @@
-   
+diff -Nru resin-cmp-1.0.4.orig/configure.in resin-cmp-1.0.4/configure.in
+--- resin-cmp-1.0.4.orig/configure.in	Fri Dec 21 06:51:47 2001
++++ resin-cmp-1.0.4/configure.in	Fri Dec 21 06:57:19 2001
+@@ -721,7 +721,7 @@
+ ], [
  OPENSSL=${withval}
  
 -if test ! -r "${OPENSSL}/lib/libssl.a"; then
 +if test ! -r "${OPENSSL}/lib/libssl.so"; then
-   { echo "configure: error: Can't find valid OpenSSL ${openssl}" 1>&2; exit 1; }
+   AC_MSG_ERROR([Can't find valid OpenSSL ${openssl}])
  fi
- 
-@@ -1981,7 +1981,7 @@
+ ])
+@@ -737,7 +737,7 @@
  
  if test -z "${OPENSSL}"; then
    foo=bar
 -elif test ! -r "${OPENSSL}/lib/libssl.a"; then
 +elif test ! -r "${OPENSSL}/lib/libssl.so"; then
-   { echo "configure: error: Can't find valid OpenSSL in ${OPENSSL}" 1>&2; exit 1; }
+   AC_MSG_ERROR([Can't find valid OpenSSL in ${OPENSSL}])
  elif test ! -r "${OPENSSL}/include/openssl/ssl23.h"; then
-   { echo "configure: error: Can't find valid OpenSSL in ${OPENSSL}" 1>&2; exit 1; }
-@@ -1998,7 +1998,7 @@
+   AC_MSG_ERROR([Can't find valid OpenSSL in ${OPENSSL}])
+@@ -754,7 +754,7 @@
  
    INCLUDES="$INCLUDES -I$OPENSSL/include"
    SSL_OBJ=ssl.o
@@ -26,4 +27,4 @@
 +  PROXY_LIBS="$PROXY_LIBS -lssl -lcrypto"
  fi
  
- 
+ AC_SUBST(INCLUDES)
