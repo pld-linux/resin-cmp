@@ -1,0 +1,68 @@
+#!/bin/sh
+#
+# resin	resin (scan and run services)
+#
+# chkconfig:	345 66 45
+#
+# description:	resin (scan and run services) is a server part of the daemontools suite.
+#
+# id:		$Id$
+#
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# Get network config
+. /etc/sysconfig/network
+
+# Get service config
+[ -f /etc/sysconfig/resin ] && . /etc/sysconfig/resin
+
+# Check that networking is up.
+if is_no "${NETWORKING}"; then
+        msg_Network_Down resin
+        exit 1
+fi
+			
+
+# See how we were called.
+case "$1" in
+  start)
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/resin ]; then
+      cd /usr/share/resin
+		msg_starting resin; busy
+      su -s /bin/sh http -c "bin/resin > /dev/null &"
+		ok
+		touch /var/lock/subsys/resin
+      RETVAL=0
+	else
+		msg_Already_Running resin
+      exit 1
+	fi
+	;;
+  stop)
+   if [ -f /var/lock/subsys/resin ]; then
+		msg_stopping resin
+		killproc resin
+		rm -f /var/lock/subsys/resin >/dev/null 2>&1
+      RETVAL=0
+	else
+		msg_Not_Running resin
+		exit 1
+	fi	
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  status)
+	status resin
+	exit $?
+	;;
+  *)
+	msg_Usage "$0 {start|stop|status|restart}"
+	exit 1
+esac
+
+exit $RETVAL
