@@ -31,7 +31,7 @@ PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	jdk >= 1.2
 Requires:	sed
-# it's known it's better to use apache as http server, but
+# it's known it's better to use apache as HTTP server, but
 # resin itself has got httpd too.
 Provides:	httpd
 Provides:	webserver
