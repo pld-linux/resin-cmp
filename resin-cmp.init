@@ -38,12 +38,12 @@ action() {
 		msg_starting resin
 	else
 		echo 'error: use action() <stop|start>'
-		return 1
+		return 2
 	fi
 
 	if [ -z "$VERBOSE" ]; then
 		busy
-			/usr/bin/resin $PARAMS $act > /dev/null 2> /dev/null
+		/usr/bin/resin $PARAMS $act > /dev/null 2> /dev/null
 		ok
 	else
 		/usr/bin/resin $PARAMS -verbose $act
@@ -51,7 +51,7 @@ action() {
 	return 0
 }
 
-
+RETVAL=0
 # See how we were called.
 case "$1" in
   start)
@@ -59,33 +59,30 @@ case "$1" in
 	if [ ! -f /var/lock/subsys/resin ]; then
 		action start
 		touch /var/lock/subsys/resin
-		RETVAL=0
 	else
 		msg_already_running resin
-		exit 1
 	fi
 	;;
   stop)
 	if [ -f /var/lock/subsys/resin ]; then
 		action stop
 		rm -f /var/lock/subsys/resin >/dev/null 2>&1
-		RETVAL=0
 	else
 		msg_not_running resin
-		exit 1
 	fi	
 	;;
-  restart|reload)
+  restart|force-reload)
 	$0 stop
 	$0 start
+	exit $?
 	;;
   status)
 	status resin
 	exit $?
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|reload|status}"
-	exit 1
+	msg_usage "$0 {start|stop|restart|force-reload|status}"
+	exit 3
 esac
 
 exit $RETVAL
