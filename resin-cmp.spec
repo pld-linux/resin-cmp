@@ -258,7 +258,7 @@ echo "Don't forget to disable examples in resin.conf and restart resin-cmp"
 %attr(0750,root,http) %dir %{_sysconfdir}/resin
 %attr(0640,root,http) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/resin/resin.conf
 %attr(0640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/resin
-%attr(0750,root,root) /etc/logrotate.d
+%attr(0640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/*
 %attr(0754,root,root) /etc/rc.d/init.d/resin
 %attr(0755,root,root) %{_bindir}/resin
 %dir %{httpdir}/resin
