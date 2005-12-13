@@ -27,7 +27,7 @@ BuildRequires:	automake >= 1.4d
 BuildRequires:	jdk >= 1.2
 BuildRequires:	libtool >= 1.4
 BuildRequires:	openssl-devel >= 0.9.7d
-PreReq:		rc-scripts
+Requires:	rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	jdk >= 1.2
 Requires:	sed
@@ -255,15 +255,15 @@ echo "Don't forget to disable examples in resin.conf and restart resin-cmp"
 %files
 %defattr(644,root,root,755)
 %doc LICENSE readme.txt conf/*
-%attr(0750,root,http) %dir %{_sysconfdir}/resin
-%attr(0640,root,http) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/resin/resin.conf
-%attr(0640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/resin
-%attr(0640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/*
-%attr(0754,root,root) /etc/rc.d/init.d/resin
-%attr(0755,root,root) %{_bindir}/resin
+%attr(750,root,http) %dir %{_sysconfdir}/resin
+%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/resin/resin.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/resin
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/*
+%attr(754,root,root) /etc/rc.d/init.d/resin
+%attr(755,root,root) %{_bindir}/resin
 %dir %{httpdir}/resin
 %{httpdir}/resin/webapps
-%attr(0775,root,http) %dir %{httpdir}/resin/WEB-INF
+%attr(775,root,http) %dir %{httpdir}/resin/WEB-INF
 %{httpdir}/resin/WEB-INF/*
 %{_datadir}/resin
 %attr(770,root,http) %dir /var/log/resin
@@ -276,15 +276,15 @@ echo "Don't forget to disable examples in resin.conf and restart resin-cmp"
 
 %files doc
 %defattr(644,root,root,755)
-%attr(0750,root,http) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/resin/examples
+%attr(750,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/resin/examples
 %{httpdir}/resin
 
 %files mod_caucho
 %defattr(644,root,root,755)
-%attr(0640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/httpd/mod_caucho.conf
-%attr(0640,root,http) %config %verify(not size mtime md5) %{_sysconfdir}/resin/apache2resin.conf
-%attr(0755,root,root) %{_libexecdir}/mod_caucho.so
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd/mod_caucho.conf
+%attr(640,root,http) %config %verify(not md5 mtime size) %{_sysconfdir}/resin/apache2resin.conf
+%attr(755,root,root) %{_libexecdir}/mod_caucho.so
 
 %files hardcore
 %defattr(644,root,root,755)
-%attr(0755,root,root) %{_datadir}/resin/libexec/resin.o
+%attr(755,root,root) %{_datadir}/resin/libexec/resin.o
