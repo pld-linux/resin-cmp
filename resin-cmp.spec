@@ -27,17 +27,16 @@ BuildRequires:	automake >= 1.4d
 BuildRequires:	jdk >= 1.2
 BuildRequires:	libtool >= 1.4
 BuildRequires:	openssl-devel >= 0.9.7d
-Requires:	rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	jdk >= 1.2
+Requires:	rc-scripts
 Requires:	sed
 # it's known it's better to use apache as HTTP server, but
 # resin itself has got httpd too.
-Provides:	httpd
-Provides:	webserver
+Provides:	ejb
 Provides:	jsp
 Provides:	servlet
-Provides:	ejb
+Provides:	webserver
 Conflicts:	resin
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
