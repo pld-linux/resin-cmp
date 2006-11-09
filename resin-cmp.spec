@@ -74,7 +74,7 @@ Summary(pl):	Dodatkowa dokumentacja do Resina
 Group:		Networking/Daemons/Java
 Requires(post):	fileutils
 Requires(post):	findutils
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description doc
 Documentation for Resin. Contains:
@@ -105,7 +105,7 @@ Group:		Networking/Daemons
 Requires(post,preun):	%{apxs}
 Requires(post,preun):	grep
 Requires(preun):	fileutils
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 Requires:	apache(EAPI)
 
 %description mod_caucho
@@ -118,7 +118,7 @@ Pozwala obs³ugiwaæ ¿±dania JSP spod Apache.
 Summary:	Resin kernel module
 Summary(pl):	Modu³ j±dra do Resina
 Group:		Networking/Daemons
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 Provides:	webserver
 
 %description hardcore
