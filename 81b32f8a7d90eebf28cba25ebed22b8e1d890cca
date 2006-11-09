@@ -1,0 +1,11 @@
+- Release: 4
+- added logrotate support
+- configuration sources renumbered
+- resin-cmp-pidfile.patch added
+- chagnge {Build,}Requires: ibm-java-sdk to jdk
+- directory structure changed:
+  - bin/resin is under %{_bindir}
+  - conf/* is under %{_sysconfdir}/resin
+- extra parameters in sysconfig/resin
+- rc.d/init.d/resin rewritten
+- bug fixed in %post mod_caucho
