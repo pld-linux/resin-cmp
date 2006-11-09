@@ -1,0 +1,7 @@
+- updated to 1.0.4
+- config files merged a bit
+- add provides webserver to hardcore module
+- added autoconf files generation
+- changed %configure2_13 into %configure
+- removed automatic config manipulations from %preun/%post scripts
+- %files section corrections and cleanups
