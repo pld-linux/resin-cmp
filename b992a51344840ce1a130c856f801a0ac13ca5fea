@@ -1,0 +1,7 @@
+- config devided to separated sections
+- resin-cmp-makefile_in-jni_include.patch added
+- IPV6 patch updated
+- resin-cmp-configure-libssl_so.patch updated
+- mod_caucho excluded to separated package
+- all %post %preun scripts rewritten
+- release: 3
