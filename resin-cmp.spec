@@ -1,5 +1,5 @@
 Summary:	A fast servlet and JSP engine
-Summary(pl):	Szybki silnik servletów i JSP
+Summary(pl.UTF-8):   Szybki silnik servletÃ³w i JSP
 Name:		resin-cmp
 Version:	1.0.4
 Release:	1
@@ -56,21 +56,21 @@ separation of content from style with its XSL support. Servlets can
 generate simple XML and use an XSL filter to format results for each
 client's capability, from palm pilots to Mozilla.
 
-%description -l pl
+%description -l pl.UTF-8
 Resin-CMP dostarcza aplikacjom servletowym Enterprise Java Bean's
-Container Managed Persistence (CMP), pozwalaj±c przyzwoitym witrynom
-wyeliminowaæ wpisane na sta³e wywo³ania JDBC bez potrzeby
-komplikowania rozproszonych obiektów.
+Container Managed Persistence (CMP), pozwalajÄ…c przyzwoitym witrynom
+wyeliminowaÄ‡ wpisane na staÅ‚e wywoÅ‚ania JDBC bez potrzeby
+komplikowania rozproszonych obiektÃ³w.
 
 Resin-CMP zawiera Resina 2.0. Resin to szybki silnik servletowy i JSP,
-obs³uguj±cy load balancing aby osi±gn±æ wiêksz± niezawodno¶æ. Resin
-wspiera oddzielenie tre¶ci od stylu poprzez obs³ugê XSL. Servlety mog±
-generowaæ prosty XML i u¿ywaæ filtra XSL do formatowania wyników
-zale¿nie od mo¿liwo¶ci klienta, od Palm Pilotów do Mozilli.
+obsÅ‚ugujÄ…cy load balancing aby osiÄ…gnÄ…Ä‡ wiÄ™kszÄ… niezawodnoÅ›Ä‡. Resin
+wspiera oddzielenie treÅ›ci od stylu poprzez obsÅ‚ugÄ™ XSL. Servlety mogÄ…
+generowaÄ‡ prosty XML i uÅ¼ywaÄ‡ filtra XSL do formatowania wynikÃ³w
+zaleÅ¼nie od moÅ¼liwoÅ›ci klienta, od Palm PilotÃ³w do Mozilli.
 
 %package doc
 Summary:	Additional documentation for Resin
-Summary(pl):	Dodatkowa dokumentacja do Resina
+Summary(pl.UTF-8):   Dodatkowa dokumentacja do Resina
 Group:		Networking/Daemons/Java
 Requires(post):	fileutils
 Requires(post):	findutils
@@ -87,20 +87,20 @@ Documentation for Resin. Contains:
 - Servlet Example, Virtual Hosts, Caching, Load Balancing
 - The Reference guide, The JavaDoc
 
-%description doc -l pl
+%description doc -l pl.UTF-8
 Dokumentacja dla Resina. Zawiera:
 - servlety demonstracyjne, FAQ
 - konfiguracje instalacji: dla samodzielnego Resina, Resina z Apache
   pod Uniksem, z Apache pod Win32, IIS, O'Reilly WebSite, Netscape.
-- podstawowy resin.conf: konfiguracja servletów, konfiguracja bazy
-  danych, konfiguracja aplikacji WWW, konfiguracja HTTP i srun, ogólna
+- podstawowy resin.conf: konfiguracja servletÃ³w, konfiguracja bazy
+  danych, konfiguracja aplikacji WWW, konfiguracja HTTP i srun, ogÃ³lna
   konfiguracja Resina
-- przyk³ad servletu, wirtualnych hostów, cachowania, load balancingu
+- przykÅ‚ad servletu, wirtualnych hostÃ³w, cachowania, load balancingu
 - przewodnik, JavaDoc.
 
 %package mod_caucho
 Summary:	Resin module for Apache
-Summary(pl):	Modu³ Resina dla Apache
+Summary(pl.UTF-8):   ModuÅ‚ Resina dla Apache
 Group:		Networking/Daemons
 Requires(post,preun):	%{apxs}
 Requires(post,preun):	grep
@@ -111,12 +111,12 @@ Requires:	apache(EAPI)
 %description mod_caucho
 Allows to serve JSP requests under Apache.
 
-%description mod_caucho -l pl
-Pozwala obs³ugiwaæ ¿±dania JSP spod Apache.
+%description mod_caucho -l pl.UTF-8
+Pozwala obsÅ‚ugiwaÄ‡ Å¼Ä…dania JSP spod Apache.
 
 %package hardcore
 Summary:	Resin kernel module
-Summary(pl):	Modu³ j±dra do Resina
+Summary(pl.UTF-8):   ModuÅ‚ jÄ…dra do Resina
 Group:		Networking/Daemons
 Requires:	%{name} = %{version}-%{release}
 Provides:	webserver
@@ -131,15 +131,15 @@ very low overhead.
 
 Details at http://localhost:8880/java_tut/hardcore.xtp .
 
-%description hardcore -l pl
-Resin HardCore jest modu³em j±dra Linuksa. Poprzez wci±gniêcie serwera
-WWW do j±dra, jednokomputerowe serwery Resin, jak i te z
-load-balancingiem mog± znacznie poprawiæ wydajno¶æ. HardCore zastêpuje
-Apache jako serwer WWW, pobieraj±c zapytania HTTP i przesy³aj±c je do
-backendu Resin JVM. Poniewa¿ HardCore dzia³a ca³kowicie w j±drze, ma
-bardzo ma³e opó¼nienia.
+%description hardcore -l pl.UTF-8
+Resin HardCore jest moduÅ‚em jÄ…dra Linuksa. Poprzez wciÄ…gniÄ™cie serwera
+WWW do jÄ…dra, jednokomputerowe serwery Resin, jak i te z
+load-balancingiem mogÄ… znacznie poprawiÄ‡ wydajnoÅ›Ä‡. HardCore zastÄ™puje
+Apache jako serwer WWW, pobierajÄ…c zapytania HTTP i przesyÅ‚ajÄ…c je do
+backendu Resin JVM. PoniewaÅ¼ HardCore dziaÅ‚a caÅ‚kowicie w jÄ…drze, ma
+bardzo maÅ‚e opÃ³Åºnienia.
 
-Szczegó³y na http://localhost:8880/java_tut/hardcore.xtp .
+SzczegÃ³Å‚y na http://localhost:8880/java_tut/hardcore.xtp .
 
 %prep
 %setup -q
