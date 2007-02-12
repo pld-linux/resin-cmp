@@ -1,5 +1,5 @@
 Summary:	A fast servlet and JSP engine
-Summary(pl.UTF-8):   Szybki silnik servletów i JSP
+Summary(pl.UTF-8):	Szybki silnik servletów i JSP
 Name:		resin-cmp
 Version:	1.0.4
 Release:	1
@@ -70,7 +70,7 @@ zależnie od możliwości klienta, od Palm Pilotów do Mozilli.
 
 %package doc
 Summary:	Additional documentation for Resin
-Summary(pl.UTF-8):   Dodatkowa dokumentacja do Resina
+Summary(pl.UTF-8):	Dodatkowa dokumentacja do Resina
 Group:		Networking/Daemons/Java
 Requires(post):	fileutils
 Requires(post):	findutils
@@ -100,7 +100,7 @@ Dokumentacja dla Resina. Zawiera:
 
 %package mod_caucho
 Summary:	Resin module for Apache
-Summary(pl.UTF-8):   Moduł Resina dla Apache
+Summary(pl.UTF-8):	Moduł Resina dla Apache
 Group:		Networking/Daemons
 Requires(post,preun):	%{apxs}
 Requires(post,preun):	grep
@@ -116,7 +116,7 @@ Pozwala obsługiwać żądania JSP spod Apache.
 
 %package hardcore
 Summary:	Resin kernel module
-Summary(pl.UTF-8):   Moduł jądra do Resina
+Summary(pl.UTF-8):	Moduł jądra do Resina
 Group:		Networking/Daemons
 Requires:	%{name} = %{version}-%{release}
 Provides:	webserver
