@@ -170,7 +170,7 @@ install -d $RPM_BUILD_ROOT%{_libexecdir} \
 	  $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,logrotate.d} \
 	  $RPM_BUILD_ROOT%{_datadir}/resin/{lib,sql,xsl,libexec} \
 	  $RPM_BUILD_ROOT%{httpdir}/resin/webapps \
-	  $RPM_BUILD_ROOT%{_localstatedir}/{run,log,log/archiv}/resin \
+	  $RPM_BUILD_ROOT%{_localstatedir}/{run,log,log/archive}/resin \
 	  $RPM_BUILD_ROOT%{_localstatedir}/lib/resin/{cache,work,war_expand} \
 	  $RPM_BUILD_ROOT%{_bindir}
 
