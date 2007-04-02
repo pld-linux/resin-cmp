@@ -1,26 +1,26 @@
 /var/log/resin/access_log {
-    olddir /var/log/archiv/resin
+    olddir /var/log/archive/resin
     postrotate
 	 /etc/rc.d/init.d/resin restart
     endscript
 }
 
 /var/log/resin/error_log {
-    olddir /var/log/archiv/resin
+    olddir /var/log/archive/resin
     postrotate
 	 /etc/rc.d/init.d/resin restart
     endscript
 }
 
 /var/log/resin/stderr_log {
-    olddir /var/log/archiv/resin
+    olddir /var/log/archive/resin
     postrotate
 	 /etc/rc.d/init.d/resin restart
     endscript
 }
 
 /var/log/resin/stdout_log {
-    olddir /var/log/archiv/resin
+    olddir /var/log/archive/resin
     postrotate
 	 /etc/rc.d/init.d/resin restart
     endscript
