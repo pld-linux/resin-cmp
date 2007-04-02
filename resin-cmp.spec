@@ -267,7 +267,7 @@ echo "Don't forget to disable examples in resin.conf and restart resin-cmp"
 %{_datadir}/resin
 %attr(770,root,http) %dir /var/log/resin
 %attr(660,root,http) %ghost /var/log/resin/*
-%attr(750,root,root) %dir /var/log/archiv/resin
+%attr(750,root,root) %dir /var/log/archive/resin
 %defattr(660,root,http,0770)
 %{_localstatedir}/lib/resin/cache
 %{_localstatedir}/lib/resin/work
