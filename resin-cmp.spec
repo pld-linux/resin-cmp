@@ -37,7 +37,7 @@ Provides:	ejb
 Provides:	jsp
 Provides:	servlet
 Provides:	webserver
-Conflicts:	logrotate < 3.7.4
+Conflicts:	logrotate < 3.7-4
 Conflicts:	resin
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
