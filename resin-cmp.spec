@@ -2,7 +2,7 @@ Summary:	A fast servlet and JSP engine
 Summary(pl.UTF-8):	Szybki silnik servletów i JSP
 Name:		resin-cmp
 Version:	1.0.4
-Release:	1
+Release:	2
 License:	Caucho Developer Source License
 Group:		Networking/Daemons/Java
 Source0:	http://www.caucho.com/download/%{name}-%{version}.tar.gz

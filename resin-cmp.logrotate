@@ -1,4 +1,5 @@
 /var/log/resin/access_log {
+    su root http
     olddir /var/log/archive/resin
     postrotate
 	 /etc/rc.d/init.d/resin restart
@@ -6,6 +7,7 @@
 }
 
 /var/log/resin/error_log {
+    su root http
     olddir /var/log/archive/resin
     postrotate
 	 /etc/rc.d/init.d/resin restart
@@ -13,6 +15,7 @@
 }
 
 /var/log/resin/stderr_log {
+    su root http
     olddir /var/log/archive/resin
     postrotate
 	 /etc/rc.d/init.d/resin restart
@@ -20,6 +23,7 @@
 }
 
 /var/log/resin/stdout_log {
+    su root http
     olddir /var/log/archive/resin
     postrotate
 	 /etc/rc.d/init.d/resin restart
